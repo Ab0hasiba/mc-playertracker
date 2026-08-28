@@ -1,0 +1,39 @@
+# ==============================================================================
+#                      PlayerTracker Configuration
+# ==============================================================================
+
+tracker:
+  # Lifetime in seconds after selecting a target (1800 seconds = 30 minutes)
+  lifetime-seconds: 1800
+  # Update interval in ticks for compass and action bar updates (5 ticks = 0.25s)
+  update-interval-ticks: 5
+
+recipe:
+  enabled: true
+
+  shape:
+    - "DNW"
+    - "ECP"
+    - "BND"
+
+  ingredients:
+    D: DIAMOND_BLOCK
+    N: NETHERITE_INGOT
+    W: WIND_CHARGE
+    E: ENDER_EYE
+    C: COMPASS
+    P: ENDER_PEARL
+    B: BLAZE_ROD
+
+messages:
+  tracker-created: "&aPlayer tracker created!"
+  tracking-started: "&aNow tracking &f%player%&a!"
+  tracker-expired: "&cYour player tracker has expired!"
+  target-offline: "&cThe tracked player is offline."
+  different-dimension: "&c%player% is in another dimension."
+  no-permission: "&cYou don't have permission to use this."
+  action-bar: "&bTracking: &f%player% &7| &bDistance: &f%distance%m"
+  reload-success: "&aPlayerTracker configuration reloaded successfully!"
+  give-success: "&aGiven a Player Tracker to &f%player%&a!"
+  player-not-found: "&cPlayer '%player%' not found or not online."
+  cannot-track-self: "&cYou cannot track yourself."

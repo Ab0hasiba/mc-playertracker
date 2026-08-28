@@ -1,0 +1,26 @@
+name: PlayerTracker
+version: 1.0.0
+main: com.abohasiba.playertracker.PlayerTracker
+api-version: '1.21'
+description: Advanced Endgame Player Tracking Compass Plugin for Paper
+author: AboHasiba
+
+commands:
+  playertracker:
+    description: Main command for PlayerTracker
+    usage: /playertracker <reload|give> [player]
+    permission: playertracker.admin
+    aliases:
+      - tracker
+      - ptracker
+
+permissions:
+  playertracker.use:
+    description: Allows players to use Player Trackers
+    default: true
+  playertracker.craft:
+    description: Allows players to craft Player Trackers
+    default: true
+  playertracker.admin:
+    description: Allows administrative commands for PlayerTracker
+    default: op
