@@ -3,11 +3,11 @@ plugins {
 }
 
 group = 'com.abohasiba.playertracker'
-version = '1.0.0'
+version = '1.1.0'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -23,17 +23,82 @@ repositories {
     }
 }
 
+def paperVersion = project.findProperty('paperVersion') ?: '26.1.2.build.74-stable'
+def apiVersion = project.findProperty('apiVersion') ?: '26.1'
+
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT'
+    compileOnly "io.papermc.paper:paper-api:${paperVersion}"
+
+    testImplementation "io.papermc.paper:paper-api:${paperVersion}"
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.mockito:mockito-core:5.14.2'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
+}
+
+configurations.all {
+    exclude group: 'it.unimi.dsi', module: 'fastutil'
+    exclude group: 'org.apache.maven'
+    exclude group: 'org.apache.maven.resolver'
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-    options.release = 21
+    options.compilerArgs << "-Xlint:deprecation"
 }
 
-tasks.named('jar', Jar) {
-    archiveBaseName.set('PlayerTracker')
-    archiveVersion.set('1.0.0')
-    archiveClassifier.set('')
+processResources {
+    def props = [
+        version: project.version,
+        apiVersion: apiVersion
+    ]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+test {
+    useJUnitPlatform()
+    jvmArgs '-Dnet.bytebuddy.experimental=true'
+}
+
+jar {
+    if (project.findProperty('customJarName')) {
+        archiveFileName.set(project.property('customJarName').toString())
+    } else if (project.findProperty('jarClassifier')) {
+        archiveFileName.set("PlayerTracker-${project.property('jarClassifier')}-${project.version}.jar")
+    } else {
+        archiveFileName.set("PlayerTracker-${project.version}.jar")
+    }
+}
+
+tasks.register('buildAll') {
+    group = 'build'
+    description = 'Compiles and generates separate jar files for Paper 26.1, 26.2, and 26.3'
+    dependsOn 'jar'
+    doLast {
+        def targetVersions = [
+            '26.1.x': [paper: '26.1.2.build.74-stable', api: '26.1'],
+            '26.2':   [paper: '26.2.build.134-stable',  api: '26.2'],
+            '26.3':   [paper: '26.3.build.206-stable',  api: '26.3']
+        ]
+        targetVersions.each { verTag, cfg ->
+            def outName = "PlayerTracker-${verTag}-${project.version}.jar"
+            println "Building ${outName} (Paper API: ${cfg.paper}, api-version: ${cfg.api})..."
+            exec {
+                commandLine './gradlew', 'jar', '--rerun-tasks',
+                    "-PpaperVersion=${cfg.paper}",
+                    "-PapiVersion=${cfg.api}",
+                    "-PcustomJarName=${outName}"
+            }
+            // Copy to releases directory
+            copy {
+                from "build/libs/${outName}"
+                into "releases"
+            }
+        }
+        println "All target builds successfully generated in build/libs/ and releases/!"
+    }
 }

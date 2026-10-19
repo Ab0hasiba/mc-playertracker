@@ -35,7 +35,7 @@ public class PlayerTrackerCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(MessageUtil.color("&b&lPlayerTracker &7v" + plugin.getDescription().getVersion()));
+            sender.sendMessage(MessageUtil.color("&b&lPlayerTracker &7v" + plugin.getPluginMeta().getVersion()));
             sender.sendMessage(MessageUtil.color("&7/playertracker reload &8- &fReload configuration"));
             sender.sendMessage(MessageUtil.color("&7/playertracker give <player> &8- &fGive a Player Tracker to a player"));
             return true;

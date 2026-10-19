@@ -53,7 +53,7 @@ public class PlayerTracker extends JavaPlugin {
         // Register crafting recipe
         registerRecipe();
 
-        getLogger().info("PlayerTracker v" + getDescription().getVersion() + " has been successfully enabled!");
+        getLogger().info("PlayerTracker v" + getPluginMeta().getVersion() + " has been successfully enabled!");
     }
 
     @Override

@@ -1,7 +1,7 @@
 name: PlayerTracker
-version: 1.0.0
+version: ${version}
 main: com.abohasiba.playertracker.PlayerTracker
-api-version: '1.21'
+api-version: '${apiVersion}'
 description: Advanced Endgame Player Tracking Compass Plugin for Paper
 author: AboHasiba
 

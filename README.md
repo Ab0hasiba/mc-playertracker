@@ -1,8 +1,16 @@
 # PlayerTracker
 
-**PlayerTracker** is a high-performance, production-ready Minecraft server plugin designed specifically for **Paper 1.21.1** (running on **Java 21**).
+<p align="center">
+  <b>Advanced Endgame Player Tracking Compass Plugin for Paper 26.1, 26.2, 26.3 (and 1.21.x)</b><br>
+  Craftable endgame compass allowing players to track online targets in real-time with an interactive chest GUI, dynamic compass needle updates, distance action bar, cross-dimension detection, and automatic 30-minute item expiration.
+</p>
 
-It introduces a craftable endgame compass item—the **Player Tracker**—that allows players to track other online players in real-time with an interactive chest GUI, dynamic compass needle updates, distance action bar, cross-dimension detection, and automatic 30-minute item expiration.
+<p align="center">
+  <img src="https://img.shields.io/badge/Paper-26.1%20%7C%2026.2%20%7C%2026.3-brightgreen.svg?style=for-the-badge&logo=minecraft" alt="Paper">
+  <img src="https://img.shields.io/badge/Java-25-orange.svg?style=for-the-badge&logo=openjdk" alt="Java">
+  <img src="https://img.shields.io/badge/Built%20with-Gradle-02303A.svg?style=for-the-badge&logo=gradle" alt="Gradle">
+  <img src="https://img.shields.io/badge/Version-v1.1.0-blue.svg?style=for-the-badge" alt="Version">
+</p>
 
 ---
 
@@ -20,21 +28,28 @@ It introduces a craftable endgame compass item—the **Player Tracker**—that a
 
 ---
 
-## 📋 Requirements
+## 📋 Compatibility & Requirements
 
-| Requirement | Value |
-|---|---|
-| **Server Software** | [Paper](https://papermc.io) (1.21 / 1.21.1 / 1.21.x) |
-| **Java Runtime** | Java 21 or higher |
-| **Architecture** | Server-side only (no client mod needed) |
+| Target Version | Paper API Version | Java Requirement | Release JAR Artifact | Status |
+|---|---|---|---|---|
+| **Minecraft / Paper 26.1** | `26.1.2.build.74-stable` | **Java 25+** | `releases/PlayerTracker-26.1.x-1.1.0.jar` | Supported & Tested |
+| **Minecraft / Paper 26.2** | `26.2.build.134-stable` | **Java 25+** | `releases/PlayerTracker-26.2-1.1.0.jar` | Supported & Tested |
+| **Minecraft / Paper 26.3** | `26.3.build.206-stable` | **Java 25+** | `releases/PlayerTracker-26.3-1.1.0.jar` | Supported & Tested |
+| **Minecraft / Paper 1.21.x** | `1.21.1-R0.1-SNAPSHOT` | **Java 21+** | `releases/PlayerTracker-1.0.0.jar` | Legacy Available |
+
+> **Note on Verification**: All target releases have been verified via compilation with `-Xlint:deprecation`, automated unit tests (JUnit 5 + Mockito), and bytecode inspection (bytecode major version 69 for Java 25). Because a live Paper 26 dedicated server instance is not bundled in this repository, runtime in-game server testing has not been performed.
 
 ---
 
 ## 📦 Installation
 
-1. Download or build the plugin JAR (`PlayerTracker-1.0.0.jar`).
-2. Place `PlayerTracker-1.0.0.jar` into your Paper server's `plugins/` directory.
-3. Start or restart your server.
+1. Select the JAR matching your Paper version from [`releases/`](releases/):
+   - For **Paper 26.1**: `PlayerTracker-26.1.x-1.1.0.jar`
+   - For **Paper 26.2**: `PlayerTracker-26.2-1.1.0.jar`
+   - For **Paper 26.3**: `PlayerTracker-26.3-1.1.0.jar`
+   - For legacy **Paper 1.21.x**: `PlayerTracker-1.0.0.jar`
+2. Place the JAR into your server's `plugins/` directory.
+3. Start or restart your server (requires **Java 25+** for Paper 26; **Java 21+** for Paper 1.21.x).
 4. Customize configuration in `plugins/PlayerTracker/config.yml` if desired.
 
 ---
@@ -139,6 +154,48 @@ messages:
   give-success: "&aGiven a Player Tracker to &f%player%&a!"
   player-not-found: "&cPlayer '%player%' not found or not online."
   cannot-track-self: "&cYou cannot track yourself."
+```
+
+---
+
+## 🏗️ Building from Source
+
+### Prerequisites
+- JDK 25 or higher
+- Git
+
+### Build All Target Versions
+To compile and generate release JARs for Paper 26.1, 26.2, and 26.3:
+```bash
+./gradlew buildAll
+```
+The output JARs will be created in both `build/libs/` and `releases/`:
+- `releases/PlayerTracker-26.1.x-1.1.0.jar`
+- `releases/PlayerTracker-26.2-1.1.0.jar`
+- `releases/PlayerTracker-26.3-1.1.0.jar`
+
+### Build Specific Target Version
+```bash
+# Build for Paper 26.1 (default)
+./gradlew jar
+
+# Build for Paper 26.2
+./gradlew jar -PpaperVersion=26.2.build.134-stable -PapiVersion=26.2 -PcustomJarName=PlayerTracker-26.2-1.1.0.jar
+
+# Build for Paper 26.3
+./gradlew jar -PpaperVersion=26.3.build.206-stable -PapiVersion=26.3 -PcustomJarName=PlayerTracker-26.3-1.1.0.jar
+```
+
+### Run Automated Tests
+```bash
+# Test against Paper 26.1
+./gradlew test
+
+# Test against Paper 26.2
+./gradlew test -PpaperVersion=26.2.build.134-stable -PapiVersion=26.2
+
+# Test against Paper 26.3
+./gradlew test -PpaperVersion=26.3.build.206-stable -PapiVersion=26.3
 ```
 
 ---
